@@ -23,6 +23,8 @@ pipeline {
         lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
           timeout(time: 60, unit: 'MINUTES') {
             dir(path: 'selfdrive/test') {
+              sh 'pwd'
+              sh 'ls'
               script {
                 remote.name = eon_ip
                 remote.host = eon_ip
