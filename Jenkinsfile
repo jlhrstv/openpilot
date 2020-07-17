@@ -1,3 +1,10 @@
+def remote = [:]
+remote.user = "root"
+remote.port = 8022
+remote.identityFile = "selfdrive/test/id_rsa"
+remote.retryCount = 5
+remote.retryWaitSec = 5
+
 pipeline {
   agent {
     docker {
@@ -11,6 +18,19 @@ pipeline {
 
   stages {
 
+    stage('SSH test') {
+      steps {
+        lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
+          timeout(time: 60, unit: 'MINUTES') {
+            remote.name = "$eon_ip"
+            remote.host = "$eon_ip"
+            sshCommand remote: remote, command: "echo /VERSION"
+          }
+        }
+      }
+    }
+
+    /*
     stage('Release Build') {
       when {
         branch 'devel-staging'
@@ -85,5 +105,7 @@ pipeline {
 
       }
     }
+    */
+
   }
 }
