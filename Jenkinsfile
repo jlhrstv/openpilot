@@ -4,6 +4,7 @@ remote.port = 8022
 remote.identityFile = "selfdrive/test/id_rsa"
 remote.retryCount = 5
 remote.retryWaitSec = 5
+remote.allowAnyHosts = true
 
 pipeline {
   agent {
