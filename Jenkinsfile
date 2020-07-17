@@ -23,6 +23,8 @@ pipeline {
       steps {
         lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
           timeout(time: 60, unit: 'MINUTES') {
+            echo remote.identity
+            echo credentials('id_rsa2')
             script {
               remote.name = eon_ip
               remote.host = eon_ip
