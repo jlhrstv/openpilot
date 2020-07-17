@@ -1,7 +1,6 @@
 def remote = [:]
 remote.user = "root"
 remote.port = 8022
-remote.identityFile = "selfdrive/test/id_rsa"
 remote.retryCount = 5
 remote.retryWaitSec = 5
 remote.allowAnyHosts = true
@@ -26,6 +25,7 @@ pipeline {
             script {
               remote.name = eon_ip
               remote.host = eon_ip
+              remote.identityFile = "selfdrive/test/id_rsa"
               sshCommand remote: remote, command: "echo /VERSION"
             }
           }
