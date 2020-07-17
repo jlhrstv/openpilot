@@ -18,12 +18,12 @@ pipeline {
 
   stages {
 
-    stage('SSH test') {
-      steps {
-        lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
+    lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1) {
+      remote.name = eon_ip
+      remote.host = eon_ip
+      stage('SSH test') {
+        steps {
           timeout(time: 60, unit: 'MINUTES') {
-            remote.name = "$eon_ip"
-            remote.host = "$eon_ip"
             sshCommand remote: remote, command: "echo /VERSION"
           }
         }
