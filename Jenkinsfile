@@ -22,10 +22,12 @@ pipeline {
       steps {
         lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
           timeout(time: 60, unit: 'MINUTES') {
-            script {
-              remote.name = eon_ip
-              remote.host = eon_ip
-              remote.identityFile = "selfdrive/test/id_rsa"
+            dir(path: 'selfdrive/test') {
+              script {
+                remote.name = eon_ip
+                remote.host = eon_ip
+                remote.identityFile = "id_rsa"
+              }
               sshCommand remote: remote, command: "echo /VERSION"
             }
           }
