@@ -4,7 +4,6 @@ remote.port = 8022
 remote.retryCount = 5
 remote.retryWaitSec = 5
 remote.allowAnyHosts = true
-remote.identity = credentials('id_rsa2')
 
 pipeline {
   agent {
@@ -23,11 +22,14 @@ pipeline {
       steps {
         lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
           timeout(time: 60, unit: 'MINUTES') {
-            script {
-              remote.name = eon_ip
-              remote.host = eon_ip
+            withCredentials([sshUserPrivateKey(credentialsId: 'id_rsa', keyFileVariable: 'identity')]) {
+              script {
+                remote.name = eon_ip
+                remote.host = eon_ip
+                remote.identityFile = identity
+              }
+              sshCommand remote: remote, command: "echo /VERSION"
             }
-            sshCommand remote: remote, command: "echo /VERSION"
           }
         }
       }
