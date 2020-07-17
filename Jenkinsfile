@@ -4,7 +4,7 @@ remote.port = 8022
 remote.retryCount = 5
 remote.retryWaitSec = 5
 remote.allowAnyHosts = true
-remote.identityFile = credentials('id_rsa')
+remote.identity = credentials('id_rsa')
 
 pipeline {
   agent {
