@@ -4,7 +4,6 @@ remote.port = 8022
 remote.retryCount = 5
 remote.retryWaitSec = 5
 remote.allowAnyHosts = true
-remote.identity = string(credentials('id_rsa2'))
 
 pipeline {
   agent {
@@ -15,6 +14,7 @@ pipeline {
   }
   environment {
     COMMA_JWT = credentials('athena-test-jwt')
+    ID_RSA = credentials('id_rsa')
   }
 
   stages {
@@ -27,6 +27,7 @@ pipeline {
             script {
               remote.name = eon_ip
               remote.host = eon_ip
+              remote.identity = ID_RSA
             }
             sshCommand remote: remote, command: "echo /VERSION"
           }
