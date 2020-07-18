@@ -14,7 +14,6 @@ pipeline {
   }
   environment {
     COMMA_JWT = credentials('athena-test-jwt')
-    ID_RSA = credentials('id_rsa')
   }
 
   stages {
