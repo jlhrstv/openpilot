@@ -25,7 +25,6 @@ pipeline {
             script {
               remote.name = eon_ip
               remote.host = eon_ip
-              remote.identityFile = id_file
             }
             sshCommand remote: remote, command: "echo /VERSION"
           }
