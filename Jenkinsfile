@@ -22,7 +22,7 @@ pipeline {
       steps {
         lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
           timeout(time: 60, unit: 'MINUTES') {
-            withCredentials([file(credentialsId: 'id_rsa_eon_public', variable: 'id_rsa_eon')]) {
+            withCredentials([sshUserPrivateKey(credentialsId: 'id_rsa_eon_public', variable: 'id_rsa_eon')]) {
               sh 'printenv'
               script {
                 remote.name = eon_ip
