@@ -22,12 +22,12 @@ pipeline {
       steps {
         lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
           timeout(time: 60, unit: 'MINUTES') {
-            withCredentials([string(credentialsId: 'id_rsa2', variable: 'id_str')]) {
+            withCredentials([sshUserPrivateKey(credentialsId: 'id_rsa_eon_public', variable: 'id_rsa')]) {
               sh 'printenv'
               script {
                 remote.name = eon_ip
                 remote.host = eon_ip
-                remote.identity = id_str
+                remote.identityFile = id_rsa
               }
               sshCommand remote: remote, command: "echo /VERSION"
             }
