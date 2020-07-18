@@ -21,10 +21,11 @@ pipeline {
     stage('SSH test') {
       steps {
         lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
-          withCredentials([sshUserPrivateKey(credentialsId: 'id_rsa', variable: 'id_file')]) {
+          withCredentials([sshUserPrivateKey(credentialsId: 'id_rsa', keyFileVariable: 'id_file')]) {
             script {
               remote.name = eon_ip
               remote.host = eon_ip
+              remote.identityFile = id_file
             }
             sshCommand remote: remote, command: "echo /VERSION"
           }
