@@ -8,6 +8,7 @@ pipeline {
   environment {
     COMMA_JWT = credentials('athena-test-jwt')
 
+    SSH = "ssh  -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@$eon_ip"
   }
 
   stages {
@@ -15,7 +16,7 @@ pipeline {
     stage('SSH test') {
       steps {
         lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
-          sh 'ssh  -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@$eon_ip "cat /VERSION"'
+          sh '$SSH "cat /VERSION"'
         }
       }
     }
