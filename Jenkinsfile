@@ -4,7 +4,7 @@ def phone(String ip, String cmd, String step_label="") {
   cmd = "printenv"
   sh label: "phone: ${label_txt}",
      script: """
-             ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} "/usr/bin/bash -sl <<'EOF'
+             ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} '/usr/bin/bash -sl <<EOF
              export CI=1
              export TEST_DIR="${env.TEST_DIR}"
              export GIT_BRANCH="${env.GIT_BRANCH}"
@@ -13,8 +13,7 @@ def phone(String ip, String cmd, String step_label="") {
              set -x
              cd $TEST_DIR || true
              "\$CMD"
-             EOF"
-             """
+             '"""
 }
 
 def setup_environment(String ip) {
