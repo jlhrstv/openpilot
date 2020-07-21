@@ -1,7 +1,7 @@
 def phone(String ip, String cmd, String step_label="") {
   def label_txt = step_label == null || step_label.isEmpty() ? cmd : step_label;
 
-  def test = 'echo $USER'
+  def test = 'echo \$USER'
   println test
   sh label: "phone: ${label_txt}",
      script: '${test}'
