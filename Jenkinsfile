@@ -1,5 +1,15 @@
 def phone(String ip, String cmd) {
+  // TODO: pass the environment to the phone shell
   sh "ssh -v -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} '${cmd}'"
+}
+
+def phone_script(String ip, String script) {
+  // TODO: pass the environment to the phone shell
+  sh "ssh -v -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} < '${script}'"
+}
+
+def setup_phone(String ip) {
+  phone_script(ip, "GIT_COMMIT=${env.GIT_COMMIT} selfdrive/test/setup_phone_ci.sh")
 }
 
 pipeline {
@@ -11,8 +21,6 @@ pipeline {
   }
   environment {
     COMMA_JWT = credentials('athena-test-jwt')
-
-    SSH = "ssh  -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@\$eon_ip"
   }
 
   stages {
@@ -25,7 +33,6 @@ pipeline {
       }
     }
 
-    /*
     stage('Release Build') {
       when {
         branch 'devel-staging'
@@ -53,6 +60,7 @@ pipeline {
 
       parallel {
 
+        /*
         stage('Build') {
           environment {
             CI_PUSH = "${env.BRANCH_NAME == 'master' ? 'master-ci' : ''}"
@@ -69,20 +77,22 @@ pipeline {
             }
           }
         }
+        */
 
         stage('Replay Tests') {
           steps {
             lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
                 dir(path: 'selfdrive/test') {
-                  sh 'pip install paramiko'
-                  sh 'python phone_ci.py "cd selfdrive/test/process_replay && ./camera_replay.py"'
+                  setup_phone(ip)
+                  phone(ip, "cd selfdrive/test/process_replay && CI=1 ./camera_replay")
                 }
               }
             }
           }
         }
 
+        /*
         stage('HW Tests') {
           steps {
             lock(resource: "", label: 'eon', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
@@ -97,10 +107,10 @@ pipeline {
             }
           }
         }
+        */
 
       }
     }
-    */
 
   }
 }
