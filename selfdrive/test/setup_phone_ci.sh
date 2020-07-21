@@ -1,3 +1,5 @@
+#!/usr/bin/bash set -e
+
 export SOURCE_DIR="/data/openpilot_source/"
 
 
