@@ -5,7 +5,7 @@ def phone(String ip, String cmd, String step_label="") {
              ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -sl << EOF
              set -x
              export CI=1
-             export ABC="/data/openpilot/"
+             export ABC='/data/openpilot/'
              export GIT_BRANCH=${env.GIT_BRANCH}
              export GIT_COMMIT=${env.GIT_COMMIT}
              cd $ABC || true
