@@ -10,12 +10,8 @@ def phone(String ip, String cmd, String step_label="") {
              EOF"""
 }
 
-def phone_script(String ip, String script) {
-  phone(ip, readFile(file: script), "git checkout")
-}
-
 def setup_environment(String ip) {
-  phone_script(ip, "selfdrive/test/setup_phone_ci.sh", "git checkout")
+  phone(ip, "selfdrive/test/setup_phone_ci.sh", "git checkout")
 }
 
 pipeline {
