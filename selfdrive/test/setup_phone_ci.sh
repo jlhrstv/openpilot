@@ -7,8 +7,8 @@ if [ -z "$GIT_COMMIT" ]; then
   exit 1
 fi
 
-if [ -z "$ABC" ]; then
-  echo "ABC must be set"
+if [ -z '$TEST_DIR' ]; then
+  echo "TEST_DIR must be set"
   exit 1
 fi
 echo "done"
@@ -31,6 +31,6 @@ git submodule foreach --recursive git reset --hard
 git submodule foreach --recursive git clean -xdf
 echo "git checkout took $SECONDS seconds"
 
-rsync -a --delete $SOURCE_DIR $ABC
+rsync -a --delete $SOURCE_DIR $TEST_DIR
 
-echo "$ABC synced with $GIT_COMMIT, took $SECONDS seconds"
+echo '$TEST_DIR synced with $GIT_COMMIT, took $SECONDS seconds'
