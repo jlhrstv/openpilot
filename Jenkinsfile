@@ -1,9 +1,9 @@
 def phone(String ip, String cmd) {
-  sh "ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} '${cmd}'"
+  sh label: "phone: ${cmd}", script: "ssh -t -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} '${cmd}'"
 }
 
 def phone_script(String ip, String script) {
-  sh "ssh -o StrictHostKeyChecking=no -o SendEnv=GIT_COMMIT -o SendEnv=TEST_DIR -i selfdrive/test/id_rsa -p 8022 root@${ip} < '${script}'"
+  sh label: "phone: ${cmd}", script: "ssh -t -o StrictHostKeyChecking=no -o SendEnv=GIT_COMMIT -o SendEnv=TEST_DIR -i selfdrive/test/id_rsa -p 8022 root@${ip} < '${script}'"
 }
 
 def setup_environment(String ip) {
