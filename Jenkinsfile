@@ -1,6 +1,9 @@
 def phone(String ip, String cmd) {
   sh label: "phone: ${cmd}",
-     script: "ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -slc '${cmd}'"
+     script: "ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -sl << EOF
+              export CI=1
+              cd /data/openpilot
+              ${cmd}"
 }
 
 def phone_script(String ip, String script) {
@@ -21,7 +24,6 @@ pipeline {
   }
   environment {
     COMMA_JWT = credentials('athena-test-jwt')
-    TEST_DIR = "/data/openpilot/"
   }
 
   stages {
@@ -77,7 +79,7 @@ pipeline {
             lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
                 setup_environment(device_ip)
-                phone(device_ip, "printenv && cd $TEST_DIR/selfdrive/test/process_replay && CI=1 PYTHONPATH=/data/openpilot ./camera_replay.py")
+                phone(device_ip, "printenv && cd selfdrive/test/process_replay && CI=1 PYTHONPATH=/data/openpilot ./camera_replay.py")
               }
             }
           }
