@@ -5,15 +5,13 @@ def phone(String ip, String cmd) {
 
 def phone_script(String ip, String script) {
   // TODO: pass the environment to the phone shell
-  sh "ssh -v -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} < '${script}'"
+  sh "ssh -v -o StrictHostKeyChecking=no -o SendEnv=GIT_COMMIT -i tools/ssh/key/id_rsa -p 8022 root@${ip} < '${script}'"
 }
 
 def setup_environment(String ip) {
   sh 'ls'
   sh 'pwd'
-  dir(path: 'selfdrive/test') {
-    phone_script(ip, "export GIT_COMMIT='${env.GIT_COMMIT}' && selfdrive/test/setup_phone_ci.sh")
-  }
+  phone_script(ip, "selfdrive/test/setup_phone_ci.sh")
 }
 
 pipeline {
@@ -79,10 +77,8 @@ pipeline {
           steps {
             lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
-                dir(path: 'selfdrive/test') {
-                  setup_environment(device_ip)
-                  phone(device_ip, "cd selfdrive/test/process_replay && CI=1 ./camera_replay")
-                }
+                setup_environment(device_ip)
+                phone(device_ip, "cd selfdrive/test/process_replay && CI=1 ./camera_replay")
               }
             }
           }
