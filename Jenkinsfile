@@ -5,7 +5,7 @@ def phone(String ip, String cmd) {
 }
 
 def phone_script(String ip, String script) {
-  sh label: "phone: ${cmd}", script: "${ssh_cmd} -o SendEnv=GIT_COMMIT -o SendEnv=TEST_DIR root@${ip} < '${script}'"
+  sh label: "phone: ${script}", script: "${ssh_cmd} -o SendEnv=GIT_COMMIT -o SendEnv=TEST_DIR root@${ip} < '${script}'"
 }
 
 def setup_environment(String ip) {
