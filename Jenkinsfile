@@ -8,10 +8,9 @@ def phone(String ip, String cmd, String step_label="") {
              export TEST_DIR="${env.TEST_DIR}"
              export GIT_BRANCH="${env.GIT_BRANCH}"
              export GIT_COMMIT="${env.GIT_COMMIT}"
-             export CMD="\$(echo '${cmd}')"
              set -x
              cd \$TEST_DIR || true
-             \$CMD
+             ${cmd}
              printenv
              EOF'
              """
