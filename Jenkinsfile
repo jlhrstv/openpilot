@@ -1,6 +1,5 @@
-def ssh(ip, cmd) {
-  def script = 'ssh -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} "${cmd}"';
-  return sh(script: cmd);
+def phone(ip, cmd) {
+  return sh(script: 'ssh -v -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} "${cmd}"');
 }
 
 pipeline {
@@ -21,7 +20,7 @@ pipeline {
     stage('SSH test') {
       steps {
         lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
-          ssh(eon_ip, "cat /VERSION")
+          phone(eon_ip, "cat /VERSION")
         }
       }
     }
