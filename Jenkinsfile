@@ -5,9 +5,11 @@ def phone(String ip, String cmd, String step_label="") {
              ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -sl << EOF
              set -x
              export CI=1
+             export TEST_DIR="/data/openpilot"
              export GIT_BRANCH=${env.GIT_BRANCH}
              export GIT_COMMIT=${env.GIT_COMMIT}
-             cd /data/openpilot || true
+             cd $TEST_DIR || true
+             ${cmd}
              printenv"""
 }
 
@@ -79,7 +81,7 @@ pipeline {
             lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
                 setup_environment(device_ip)
-                phone(device_ip, "printenv && cd selfdrive/test/process_replay && CI=1 PYTHONPATH=/data/openpilot ./camera_replay.py")
+                //phone(device_ip, "printenv && cd selfdrive/test/process_replay && CI=1 PYTHONPATH=/data/openpilot ./camera_replay.py")
               }
             }
           }

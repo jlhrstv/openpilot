@@ -1,10 +1,14 @@
 #!/usr/bin/bash set -e
 
-SOURCE_DIR="/data/openpilot_source/"
-TEST_DIR="/data/openpilot/"
+export SOURCE_DIR="/data/openpilot_source/"
 
 if [ -z "$GIT_COMMIT" ]; then
   echo "GIT_COMMIT must be set"
+  exit 1
+fi
+
+if [ -z "$TEST_DIR" ]; then
+  echo "TEST_DIR must be set"
   exit 1
 fi
 
