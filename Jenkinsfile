@@ -1,7 +1,7 @@
 def phone(String ip, String cmd, String step_label="") {
   def label_txt = step_label == null || step_label.isEmpty() ? cmd : step_label;
   sh label: "phone: ${label_txt}",
-     script: 'echo $SHELL'
+     script: 'echo $USER'
      /*
      script: """
              ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@{ip} /usr/bin/bash -sl << EOF
@@ -82,7 +82,7 @@ pipeline {
           steps {
             lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
-                sh 'echo $SHELL';
+                sh 'echo $USER';
                 setup_environment(device_ip)
                 //phone(device_ip, "cd selfdrive/test/process_replay && PYTHONPATH=/data/openpilot ./camera_replay.py", "camerad and modeld replay")
               }
