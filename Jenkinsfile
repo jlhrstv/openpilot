@@ -1,6 +1,7 @@
 def phone(String ip, String cmd, String step_label="") {
   def label_txt = step_label == null || step_label.isEmpty() ? cmd : step_label;
   env.TEST_DIR = "/data/openpilot"
+  cmd = "printenv"
   sh label: "phone: ${label_txt}",
      script: """
              ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} '/usr/bin/bash -sl << EOF
