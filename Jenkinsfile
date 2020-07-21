@@ -5,13 +5,13 @@ def phone(String ip, String cmd, String step_label="") {
              ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -sl << EOF
              set -x
              export CI=1
-             cd /data/openpilot
+             cd /data/openpilot || true
              ${cmd}
              EOF"""
 }
 
 def setup_environment(String ip) {
-  phone(ip, "selfdrive/test/setup_phone_ci.sh", "git checkout")
+  phone(ip, readFile(file: "selfdrive/test/setup_phone_ci.sh"), "git checkout")
 }
 
 pipeline {
