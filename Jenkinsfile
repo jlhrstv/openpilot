@@ -1,8 +1,7 @@
 def phone(String ip, String cmd, String step_label="") {
-  def label_txt = step_label == null || step_label.isEmpty() ? cmd : step_label;
-  def environment = """
-                    """
+  println cmd
 
+  def label_txt = step_label == null || step_label.isEmpty() ? cmd : step_label;
   sh label: "phone: ${label_txt}",
      script: "echo ${cmd}"
      /*
@@ -20,7 +19,6 @@ def phone(String ip, String cmd, String step_label="") {
 }
 
 def setup_environment(String ip) {
-  println readFile("selfdrive/test/setup_phone_ci.sh")
   phone(ip, readFile("selfdrive/test/setup_phone_ci.sh"), "git checkout")
 }
 
