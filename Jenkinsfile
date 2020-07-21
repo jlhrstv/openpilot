@@ -3,7 +3,7 @@ def phone(String ip, String cmd) {
 }
 
 def phone_script(String ip, String script) {
-  sh "ssh -o StrictHostKeyChecking=no -o SendEnv=GIT_COMMIT -i tools/ssh/key/id_rsa -p 8022 root@${ip} < '${script}'"
+  sh "ssh -o StrictHostKeyChecking=no -o SendEnv=GIT_COMMIT -o SendEnv=TEST_DIR -i tools/ssh/key/id_rsa -p 8022 root@${ip} < '${script}'"
 }
 
 def setup_environment(String ip) {
@@ -19,6 +19,7 @@ pipeline {
   }
   environment {
     COMMA_JWT = credentials('athena-test-jwt')
+    TEST_DIR = "/data/openpilot/"
   }
 
   stages {
@@ -74,7 +75,7 @@ pipeline {
             lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
                 setup_environment(device_ip)
-                phone(device_ip, "cd selfdrive/test/process_replay && CI=1 ./camera_replay")
+                phone(device_ip, "cd $TEST_DIR/selfdrive/test/process_replay && CI=1 ./camera_replay")
               }
             }
           }
