@@ -12,8 +12,7 @@ def phone(String ip, String cmd, String step_label="") {
              export CMD=\$"${cmd}"
              set -x
              cd $TEST_DIR || true
-             \$CMD
-             printenv
+             "\$CMD"
              EOF"
              """
 }
