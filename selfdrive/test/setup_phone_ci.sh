@@ -1,7 +1,7 @@
 #!/usr/bin/bash set -e
 
 SOURCE_DIR="/data/openpilot_source/"
-#TEST_DIR="/data/openpilot/"
+TEST_DIR="/data/openpilot/"
 
 if [ ! -z "$GIT_COMMIT" ]; then
   echo "GIT_COMMIT must be set"
