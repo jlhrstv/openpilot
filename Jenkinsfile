@@ -15,7 +15,7 @@ pipeline {
     stage('SSH test') {
       steps {
         lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
-          sh 'ssh -i tools/ssh/key/id_rsa -p 8022 root@$eon_ip "cat /VERSION"'
+          sh 'ssh  -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@$eon_ip "cat /VERSION"'
         }
       }
     }
