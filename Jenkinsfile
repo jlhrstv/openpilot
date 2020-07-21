@@ -8,8 +8,8 @@ def phone_script(String ip, String script) {
   sh "ssh -v -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} < '${script}'"
 }
 
-def setup_phone(String ip) {
-  phone_script(ip, "GIT_COMMIT=${env.GIT_COMMIT} selfdrive/test/setup_phone_ci.sh")
+def setup_environment(String ip) {
+  phone_script(ip, "GIT_COMMIT=${env.GIT_COMMIT} selfdrive/test/setup_environment_ci.sh")
 }
 
 pipeline {
@@ -25,20 +25,12 @@ pipeline {
 
   stages {
 
-    stage('SSH test') {
-      steps {
-        lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
-          phone(eon_ip, "cat /VERSION")
-        }
-      }
-    }
-
     stage('Release Build') {
       when {
         branch 'devel-staging'
       }
       steps {
-        lock(resource: "", label: 'eon-build', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
+        lock(resource: "", label: 'eon-build', inversePrecedence: true, variable: 'device_ip', quantity: 1){
           timeout(time: 60, unit: 'MINUTES') {
             dir(path: 'selfdrive/test') {
               sh 'pip install paramiko'
@@ -67,7 +59,7 @@ pipeline {
           }
 
           steps {
-            lock(resource: "", label: 'eon', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
+            lock(resource: "", label: 'eon', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
                 dir(path: 'selfdrive/test') {
                   sh 'pip install paramiko'
@@ -81,11 +73,11 @@ pipeline {
 
         stage('Replay Tests') {
           steps {
-            lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
+            lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
                 dir(path: 'selfdrive/test') {
-                  setup_phone(ip)
-                  phone(ip, "cd selfdrive/test/process_replay && CI=1 ./camera_replay")
+                  setup_environment(device_ip)
+                  phone(device_ip, "cd selfdrive/test/process_replay && CI=1 ./camera_replay")
                 }
               }
             }
@@ -95,7 +87,7 @@ pipeline {
         /*
         stage('HW Tests') {
           steps {
-            lock(resource: "", label: 'eon', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
+            lock(resource: "", label: 'eon', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
                 dir(path: 'selfdrive/test') {
                   sh 'pip install paramiko'
