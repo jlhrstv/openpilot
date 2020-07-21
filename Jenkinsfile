@@ -6,8 +6,7 @@ def phone(String ip, String cmd, String step_label="") {
              set -x
              export CI=1
              cd /data/openpilot || true
-             printenv
-             EOF"""
+             printenv"""
 }
 
 def setup_environment(String ip) {
