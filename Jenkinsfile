@@ -2,7 +2,7 @@ def phone(String ip, String cmd, String step_label="") {
   def label_txt = step_label.isEmpty() || step_label == null ? cmd : step_label;
   sh label: "phone: ${label_txt}",
      script: """
-             ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -sl << EOF
+             ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -slx << EOF
              export CI=1
              cd /data/openpilot
              ${cmd}
@@ -10,7 +10,8 @@ def phone(String ip, String cmd, String step_label="") {
 }
 
 def phone_script(String ip, String script) {
-  phone(ip, readFile(file: script))
+  def cmd = readFile(file: script)
+  phone(ip, cmd, label="git checkout")
 }
 
 def setup_environment(String ip) {

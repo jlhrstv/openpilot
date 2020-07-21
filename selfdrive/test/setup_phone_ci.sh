@@ -5,12 +5,12 @@ TEST_DIR="/data/openpilot/"
 
 GIT_COMMIT="e959746a091c41fdbc09b43969e7d6706296aec5"
 
-printenv
 if [ -z "$GIT_COMMIT" ]; then
   echo "GIT_COMMIT must be set"
   exit 1
 fi
 
+# TODO: never clear qcom_replay cache
 # clear scons cache dirs that haven't been written to in one day
 cd /tmp && find -name 'scons_cache_*' -type d -maxdepth 1 -mtime 1 -exec rm -rf '{}' \;
 
