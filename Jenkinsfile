@@ -20,6 +20,7 @@ def phone(String ip, String cmd, String step_label="") {
 }
 
 def setup_environment(String ip) {
+  println readFile("selfdrive/test/setup_phone_ci.sh")
   phone(ip, readFile("selfdrive/test/setup_phone_ci.sh"), "git checkout")
 }
 
