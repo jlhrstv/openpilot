@@ -1,3 +1,8 @@
+def ssh(ip, cmd) {
+  def script = 'ssh -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} "${cmd}"';
+  return sh(script: cmd);
+}
+
 pipeline {
   agent {
     docker {
