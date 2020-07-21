@@ -12,7 +12,7 @@ def phone(String ip, String cmd, String step_label="") {
              cd $TEST_DIR || true
              echo '\$CMD'
              echo '\$GIT_COMMIT'
-             \$(cat ${"selfdrive/test/setup_phone_ci.sh"})
+             \$(cat "selfdrive/test/setup_phone_ci.sh")
              printenv
 EOF'"""
 }
