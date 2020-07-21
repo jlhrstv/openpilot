@@ -1,10 +1,9 @@
 def phone(String ip, String cmd, String step_label="") {
   def label_txt = step_label == null || step_label.isEmpty() ? cmd : step_label;
 
-  def test = 'echo \$USER'
-  println test
+  def test = 'test string'
   sh label: "phone: ${label_txt}",
-     script: 'printenv && echo "$GIT_COMMIT"'
+     script: 'printenv && echo "$test"'
      /*
      script: """
              ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@{ip} /usr/bin/bash -sl << EOF
