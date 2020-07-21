@@ -1,16 +1,12 @@
 def phone(String ip, String cmd) {
-  // TODO: pass the environment to the phone shell
-  sh "ssh -v -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} '${cmd}'"
+  sh "ssh -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} '${cmd}'"
 }
 
 def phone_script(String ip, String script) {
-  // TODO: pass the environment to the phone shell
-  sh "ssh -v -o StrictHostKeyChecking=no -o SendEnv=GIT_COMMIT -i tools/ssh/key/id_rsa -p 8022 root@${ip} < '${script}'"
+  sh "ssh -o StrictHostKeyChecking=no -o SendEnv=GIT_COMMIT -i tools/ssh/key/id_rsa -p 8022 root@${ip} < '${script}'"
 }
 
 def setup_environment(String ip) {
-  sh 'ls'
-  sh 'pwd'
   phone_script(ip, "selfdrive/test/setup_phone_ci.sh")
 }
 
