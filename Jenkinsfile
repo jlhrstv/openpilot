@@ -4,7 +4,7 @@ def phone(String ip, String cmd) {
 
 def phone_script(String ip, String script) {
   sh label: "phone: ${script}",
-     script: "ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -slc < '${script}'"
+     script: "ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} '/usr/bin/bash -slc < ${script}'"
 }
 
 def setup_environment(String ip) {
