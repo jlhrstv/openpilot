@@ -9,6 +9,8 @@ def phone_script(String ip, String script) {
 }
 
 def setup_environment(String ip) {
+  sh 'ls'
+  sh 'pwd'
   phone_script(ip, "export GIT_COMMIT="${env.GIT_COMMIT}" && selfdrive/test/setup_phone_ci.sh")
 }
 
