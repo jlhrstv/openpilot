@@ -1,9 +1,9 @@
 def phone(String ip, String cmd) {
-  sh "ssh -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} '${cmd}'"
+  sh "ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} '${cmd}'"
 }
 
 def phone_script(String ip, String script) {
-  sh "ssh -o StrictHostKeyChecking=no -o SendEnv=GIT_COMMIT -o SendEnv=TEST_DIR -i tools/ssh/key/id_rsa -p 8022 root@${ip} < '${script}'"
+  sh "ssh -o StrictHostKeyChecking=no -o SendEnv=GIT_COMMIT -o SendEnv=TEST_DIR -i selfdrive/test/id_rsa -p 8022 root@${ip} < '${script}'"
 }
 
 def setup_environment(String ip) {
@@ -75,7 +75,7 @@ pipeline {
             lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
                 setup_environment(device_ip)
-                phone(device_ip, "cd $TEST_DIR/selfdrive/test/process_replay && CI=1 ./camera_replay.py")
+                phone(device_ip, "printenv && cd $TEST_DIR/selfdrive/test/process_replay && CI=1 ./camera_replay.py")
               }
             }
           }
