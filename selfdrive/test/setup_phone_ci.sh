@@ -2,6 +2,9 @@
 
 export SOURCE_DIR="/data/openpilot_source/"
 
+
+echo "Setting up CI environment"
+
 printenv
 
 if [ -z "\$GIT_COMMIT" ]; then
