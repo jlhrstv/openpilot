@@ -3,6 +3,8 @@
 SOURCE_DIR="/data/openpilot_source/"
 TEST_DIR="/data/openpilot/"
 
+GIT_COMMIT="e959746a091c41fdbc09b43969e7d6706296aec5"
+
 printenv
 if [ -z "$GIT_COMMIT" ]; then
   echo "GIT_COMMIT must be set"
