@@ -4,7 +4,7 @@ remote.port = 8022
 remote.retryCount = 5
 remote.retryWaitSec = 5
 remote.allowAnyHosts = true
-remote.agent = true
+#remote.agent = true
 
 pipeline {
   agent {
