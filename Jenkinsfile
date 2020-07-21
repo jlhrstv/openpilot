@@ -1,10 +1,10 @@
 def phone(String ip, String cmd) {
-  sh label: "phone: ${cmd}", script: "ssh -tt -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -slc '${cmd}'"
+  sh label: "phone: ${cmd}", script: "ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -slc '${cmd}'"
 }
 
 def phone_script(String ip, String script) {
   sh label: "phone: ${script}",
-     script: "ssh -tt -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -slc < '${script}'"
+     script: "ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -slc < '${script}'"
 }
 
 def setup_environment(String ip) {
