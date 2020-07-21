@@ -4,6 +4,8 @@ def phone(String ip, String cmd, String step_label="") {
                     """
 
   sh label: "phone: ${label_txt}",
+     script: "echo ${cmd}"
+     /*
      script: """
              ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -sl << EOF
              set -x
@@ -14,6 +16,7 @@ def phone(String ip, String cmd, String step_label="") {
              """ + '''
              cd $TEST_DIR || true
              ''' + cmd
+      */
 }
 
 def setup_environment(String ip) {
