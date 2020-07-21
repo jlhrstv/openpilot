@@ -6,9 +6,9 @@ def phone(String ip, String cmd, String step_label="") {
              ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@${ip} /usr/bin/bash -sl << EOF
              set -x
              export CI=1
-             export TEST_DIR=${env.TEST_DIR}
-             export GIT_BRANCH=${env.GIT_BRANCH}
-             export GIT_COMMIT=${env.GIT_COMMIT}
+             export TEST_DIR="${env.TEST_DIR}"
+             export GIT_BRANCH="${env.GIT_BRANCH}"
+             export GIT_COMMIT="${env.GIT_COMMIT}"
              export CMD="$(echo ${cmd})"
              cd \$TEST_DIR || true
              \$CMD
