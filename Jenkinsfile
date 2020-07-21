@@ -1,15 +1,16 @@
 def phone(String ip, String cmd, String step_label="") {
   def label_txt = step_label == null || step_label.isEmpty() ? cmd : step_label;
+  env.TEST_DIR = "/data/openpilot"
   sh label: "phone: ${label_txt}",
      script: """
              ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@{ip} /usr/bin/bash -sl << EOF
              set -x
              export CI=1
-             export TEST_DIR="/data/openpilot/"
+             export TEST_DIR=${env.TEST_DIR}
              export GIT_BRANCH=${env.GIT_BRANCH}
              export GIT_COMMIT=${env.GIT_COMMIT}
              export CMD=${cmd}
-             cd $TEST_DIR || true
+             cd \$TEST_DIR || true
              \$CMD
              """
 }
