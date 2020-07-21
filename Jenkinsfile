@@ -21,7 +21,7 @@ pipeline {
     stage('SSH test') {
       steps {
         lock(resource: "", label: 'eon-test', inversePrecedence: true, variable: 'eon_ip', quantity: 1){
-          sh '$SSH "cat /VERSION"'
+          ssh(eon_ip, "cat /VERSION")
         }
       }
     }
