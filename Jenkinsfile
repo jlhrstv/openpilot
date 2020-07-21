@@ -7,7 +7,6 @@ def phone(String ip, String cmd, String step_label="") {
              export CI=1
              cd /data/openpilot || true
              printenv
-             #${cmd}
              EOF"""
 }
 
