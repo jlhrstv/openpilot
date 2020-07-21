@@ -82,6 +82,7 @@ pipeline {
           steps {
             lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
+                sh 'echo $SHELL';
                 setup_environment(device_ip)
                 //phone(device_ip, "cd selfdrive/test/process_replay && PYTHONPATH=/data/openpilot ./camera_replay.py", "camerad and modeld replay")
               }
