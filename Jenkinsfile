@@ -1,5 +1,5 @@
 def phone(String ip, String cmd) {
-  return sh(script: 'ssh -v -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} "${cmd}"');
+  sh "ssh -v -o StrictHostKeyChecking=no -i tools/ssh/key/id_rsa -p 8022 root@${ip} '${cmd}'"
 }
 
 pipeline {
