@@ -8,7 +8,7 @@ def phone(String ip, String cmd, String step_label="") {
              export TEST_DIR='/data/openpilot/'
              export GIT_BRANCH=${env.GIT_BRANCH}
              export GIT_COMMIT=${env.GIT_COMMIT}
-             cd $ABC || true
+             cd \$TEST_DIR || true
              ${cmd}
              printenv"""
 }
