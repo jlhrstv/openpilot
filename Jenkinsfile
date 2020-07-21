@@ -13,6 +13,8 @@ def phone(String ip, String cmd, String step_label="") {
              set -x
              cd $TEST_DIR || true
              echo "\$CMD"
+             echo "\$GIT_COMMIT"
+             printenv
 EOF'"""
 }
 
