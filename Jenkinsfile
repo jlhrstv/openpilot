@@ -13,7 +13,7 @@ def phone(String ip, String cmd, String step_label="") {
              set -x
              cd $TEST_DIR || true
              echo "\$CMD"
-             EOF'"""
+EOF'"""
 }
 
 def setup_environment(String ip) {
