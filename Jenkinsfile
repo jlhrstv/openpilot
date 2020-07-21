@@ -4,7 +4,7 @@ def phone(String ip, String cmd, String step_label="") {
   def test = 'echo \$USER'
   println test
   sh label: "phone: ${label_txt}",
-     script: 'echo $USER'
+     script: 'printenv && echo $USER'
      /*
      script: """
              ssh -o StrictHostKeyChecking=no -i selfdrive/test/id_rsa -p 8022 root@{ip} /usr/bin/bash -sl << EOF
