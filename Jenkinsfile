@@ -10,17 +10,34 @@ def phone(String ip, String cmd, String step_label="") {
              export GIT_COMMIT="${env.GIT_COMMIT}"
              set -ex
              cd $TEST_DIR || true
-             echo '\$CMD'
-             echo '\$GIT_COMMIT'
-             ls
-             pwd
-             \$(cat "setup_phone_ci.sh")
-             printenv
+             ${cmd}
 EOF'"""
 }
 
 def setup_environment(String ip) {
-  phone(ip, readFile("setup_phone_ci.sh"), "git checkout")
+  def setup = '''
+  # clear scons cache dirs that haven't been written to in one day
+  cd /tmp && find -name 'scons_cache_*' -type d -maxdepth 1 -mtime 1 -exec rm -rf '{}' \;
+
+  # set up environment
+  cd \$SOURCE_DIR
+  git reset --hard
+  git fetch origin
+  find . -maxdepth 1 -not -path './.git' -not -name '.' -not -name '..' -exec rm -rf '{}' \;
+  git reset --hard \$GIT_COMMIT
+  git checkout \$GIT_COMMIT
+  git clean -xdf
+  git submodule update --init
+  git submodule foreach --recursive git reset --hard
+  git submodule foreach --recursive git clean -xdf
+  echo "git checkout took \$SECONDS seconds"
+
+  rsync -a --delete \$SOURCE_DIR \$TEST_DIR
+
+  echo "\$TEST_DIR synced with \$GIT_COMMIT, took \$SECONDS seconds"
+  '''
+
+  phone(ip, setup, "git checkout")
 }
 
 pipeline {
@@ -86,9 +103,7 @@ pipeline {
           steps {
             lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
-              dir(path: 'selfdrive/test') {
                 setup_environment(device_ip)
-              }
                 //phone(device_ip, "cd selfdrive/test/process_replay && PYTHONPATH=/data/openpilot ./camera_replay.py", "camerad and modeld replay")
               }
             }
