@@ -14,9 +14,7 @@ def phone(String ip, String cmd, String step_label="") {
              echo '\$GIT_COMMIT'
              ls
              pwd
-             ls selfdrive
-             ls selfdrive/test
-             \$(cat "selfdrive/test/setup_phone_ci.sh")
+             \$(cat "setup_phone_ci.sh")
              printenv
 EOF'"""
 }
@@ -88,7 +86,9 @@ pipeline {
           steps {
             lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
+              dir(path: 'selfdrive/test') {
                 setup_environment(device_ip)
+              }
                 //phone(device_ip, "cd selfdrive/test/process_replay && PYTHONPATH=/data/openpilot ./camera_replay.py", "camerad and modeld replay")
               }
             }
