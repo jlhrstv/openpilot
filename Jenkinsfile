@@ -2,8 +2,6 @@ def phone(String ip, String cmd, String step_label="") {
   def label_txt = step_label == null || step_label.isEmpty() ? cmd : step_label;
   env.TEST_DIR = "/data/openpilot"
   sh label: "phone: ${label_txt}",
-     script: "printenv"
-     /*
      script: """
              ssh -o StrictHostKeyChecking=no -i id_rsa -p 8022 root@${ip} '/usr/bin/bash -sl <<EOF
              export CI=1
@@ -14,11 +12,17 @@ def phone(String ip, String cmd, String step_label="") {
              cd $TEST_DIR || true
              ${cmd}
 EOF'"""
-    */
 }
 
 def setup_environment(String ip) {
-  phone(ip, readFile('selfdrive/test/setup_phone_ci.sh'), "git checkout")
+  def script_path = "selfdrive/test/setup_phone_ci.sh";
+  sh label: "phone: git checkout",
+     script: """
+             sed -i '1s/^/export GIT_COMMIT=${env}\n/}' ${script_path}
+             cat $(script_path)
+             echo "export GIT_COMMIT=${env.GIT_COMMIT}" > ${script_path}
+             ssh -o StrictHostKeyChecking=no -i id_rsa -p 8022 root@${ip} < ${selfdrive/test/setup_phone_ci.sh}
+             """
 }
 
 pipeline {
@@ -85,7 +89,7 @@ pipeline {
             lock(resource: "", label: 'eon2', inversePrecedence: true, variable: 'device_ip', quantity: 1){
               timeout(time: 60, unit: 'MINUTES') {
                 setup_environment(device_ip)
-                //phone(device_ip, "cd selfdrive/test/process_replay && PYTHONPATH=/data/openpilot ./camera_replay.py", "camerad and modeld replay")
+                phone(device_ip, "cd selfdrive/test/process_replay && ./camera_replay.py", "camerad/modeld replay")
               }
             }
           }
