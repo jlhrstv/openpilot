@@ -18,7 +18,7 @@ def setup_environment(String ip) {
   def script_path = "selfdrive/test/setup_phone_ci.sh";
   sh label: "phone: git checkout",
      script: """
-             sed -i '''1s/^/export GIT_COMMIT="${env.GIT_COMMIT}"\n/}''' ${script_path}
+             sed -i \\"1s/^/export GIT_COMMIT="${env.GIT_COMMIT}"\n/}\\" ${script_path}
              cat ${script_path}
              """
              //ssh -o StrictHostKeyChecking=no -i id_rsa -p 8022 root@${ip} < ${script_path}
