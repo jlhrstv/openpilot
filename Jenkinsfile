@@ -20,9 +20,8 @@ def setup_environment(String ip) {
      script: """
              sed -i "1s/^/export GIT_COMMIT=${env.GIT_COMMIT}\n/}" ${script_path}
              cat ${script_path}
-             echo "export GIT_COMMIT=${env.GIT_COMMIT}" > ${script_path}
-             ssh -o StrictHostKeyChecking=no -i id_rsa -p 8022 root@${ip} < ${script_path}
              """
+             //ssh -o StrictHostKeyChecking=no -i id_rsa -p 8022 root@${ip} < ${script_path}
 }
 
 pipeline {
